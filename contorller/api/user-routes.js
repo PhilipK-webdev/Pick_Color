@@ -12,7 +12,8 @@ router.get("/all", (req, res) => {
 
 router.post("/create", (req, res) => {
     db.User.create({
-        name: req.body.name
+        name: req.body.name,
+        color: req.body.color
     }).then(result => {
         res.json(result);
     });
