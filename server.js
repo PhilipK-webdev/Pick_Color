@@ -9,8 +9,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("./client"));
 
+const colorRoutes = require("./contorller/api/color-route");
+app.use(colorRoutes);
+const userRoutes = require("./contorller/api/user-routes");
+app.use(userRoutes);
 const clientRoutes = require("./contorller/client/html-route");
-app.use("/", clientRoutes);
+app.use(clientRoutes);
 
 // Connection with the database:
 db.sequelize.sync().then(() => {
