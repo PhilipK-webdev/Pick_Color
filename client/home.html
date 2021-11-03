@@ -5,11 +5,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <title>Pick Color</title>
 </head>
 
 <body>
-    <h1>Hello</h1>
+    <main>
+        <div class="container">
+            <div class="form-container">
+                <h1 class="welcome">Pick Your Color</h1>
+                <form action="/create" method="POST" class="form">
+
+                    <label for="uname" class="label-name">User Name:</label><br>
+                    <input class="user-input" type="text" id="uname" name="uname" value="John"
+                        placeholder="Enter Your Name"><br>
+                    <label for="colors">Choose a color:</label>
+                    <select name="colors" id="colors" class="dropdown">
+                    </select>
+                    <input class="btn-submit" type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="./assets//index.js"></script>
 </body>
 
 </html>

@@ -5,7 +5,7 @@ const db = require("../../models");
 router.get("/all/color", (req, res) => {
     db.Color.findAll({
     }).then(dbColor => {
-        res.json(dbColor);
+        res.send(dbColor);
     });
 });
 
