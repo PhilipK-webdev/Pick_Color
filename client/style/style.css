@@ -1,3 +1,8 @@
+:root {
+  --background-gradient: linear-gradient(30deg, #f39c12 30%, #f1c40f);
+  --gray: #34495e;
+  --darkgray: #2c3e50;
+}
 * {
     margin: 0;
     padding: 0;
@@ -11,36 +16,38 @@
 
   body {
     font-family: 'Poppins', sans-serif;
-    color: #444;
-    background-color: #f3f3f3;
+    color:white;
+    background-color: rgb(38, 49, 74);
     height: 100vh;
     padding: 2rem;
   }
+ 
   select {
-    /* appearance: none; */
-    width: 50%;
+    appearance: none;
     height: 35px;
     border-radius: 10rem;
-    margin-right: 1rem;
-    color: inherit;
     border: 1px solid rgba(255, 255, 255, 0.637);
     transition: all 0.3s;
     background-color: blanchedalmond;
     border: none;
     padding: 0 1em 0 0;
     margin: 0;
-    width: 100%;
-    font-family: inherit;
-    font-size: inherit;
+    width: 425px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 15px;
     cursor: pointer;
     line-height: inherit;
+    margin-right: 1rem;
+    text-align: center;
   }
   select::-ms-expand {
     display: none;
   }
-  select {
-    outline: none;
+  .standard-select{
+    font-size: 20px;
+    margin-bottom: 1%;
   }
+ 
   .welcome {
     font-size: 5rem;
     font-weight: 500;
@@ -58,7 +65,7 @@
   transition: all 1s;
 }
 .form-container{
-    border: 1px solid black;
+    border: 7px solid white;
     width: 70%;
     height: 90%;
     border-radius: 5%;
@@ -92,10 +99,10 @@
     height: 35px;
     border-radius: 10rem;
     margin-right: 1rem;
-    color: inherit;
     border: 1px solid rgba(255, 255, 255, 0.637);
     transition: all 0.3s;
     background-color: blanchedalmond;
+    cursor: pointer;
     
 }
 
@@ -106,15 +113,15 @@
     cursor: pointer;
     border: none;
     font-size: 2.2rem;
-    color: inherit;
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 10rem;
     margin-right: 1rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .btn-submit:hover{
     outline: none;
-    color: #777;
+    color: rgb(219, 30, 30);
 }
 .user-input:focus {
     outline: none;
@@ -123,3 +130,14 @@
   .user-input::placeholder {
     color: #bbb;
   }
+
+  .error{
+    opacity: 100;
+    display: flex;
+    justify-content: center;
+    /* margin-top: 3%; */
+    padding-top: 3%;
+  }
+
+  
+  

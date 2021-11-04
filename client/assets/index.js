@@ -6,7 +6,9 @@ const form = document.querySelector(".form");
 const dropdown = document.querySelector(".dropdown");
 const select = document.querySelector(".select");
 const body = document.querySelector('body');
+const formContainer = document.querySelector(".form-container");
 async function init() {
+
     const cookieData = getCookie();
     if (Object.values(cookieData)[0] !== undefined) {
         const users = await getAllUserDB();
@@ -15,7 +17,8 @@ async function init() {
             const html = `
             <option value=${cookieObj[0].id} class="option">${cookieObj[0].color}</option>
           `;
-            userInput.value = cookieObj[0].name;
+            userInput.value = "";
+            document.querySelector(".label-name").innerHTML = `Welcome Back:${cookieObj[0].name}`
             dropdown.insertAdjacentHTML('beforeend', html);
         }
     } else {
@@ -53,7 +56,7 @@ const validation = (str, prom) => {
             name: str,
             color: prom
         }
-        // createUser(OBJ_USER);
+        createUser(OBJ_USER);
         setCookie(OBJ_USER);
         userInput.value = "";
     }
@@ -101,19 +104,18 @@ const getAllUserDB = () => {
     const cookieData = getCookie();
     return new Promise((resolve, reject) => {
         fetch("/all", CONFIG).then(res => {
-            if (res.status !== 200) {
+            if (res.status === 200) {
                 res.json().then(response => {
                     resolve(response);
                 });
             } else {
-                console.log()
+
                 body.style.backgroundColor = cookieData.color.split(" ").slice(-1)[0];
-                const element = document.createElement('h');
-
-                element.style.opacity = 100;
-                // document.querySelector("h1").style.opacity = 0;
-
-
+                const elem = ` 
+                <h1 class="error">ERROR</h1>
+                `
+                formContainer.insertAdjacentHTML("afterbegin", elem);
+                document.querySelector(".welcome").style.opacity = 0;
             }
 
         }).catch(err => reject(err));
