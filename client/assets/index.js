@@ -7,8 +7,9 @@ const dropdown = document.querySelector(".dropdown");
 const select = document.querySelector(".select");
 const body = document.querySelector('body');
 const formContainer = document.querySelector(".form-container");
-async function init() {
+import { getAllUserDB, getColorDB, createUser, getCookie, setCookie, updateUser } from "../utils/utils.js";
 
+async function init() {
     const cookieData = getCookie();
     if (Object.values(cookieData)[0] !== undefined) {
         const users = await getAllUserDB();
@@ -17,16 +18,17 @@ async function init() {
             const html = `
             <option value=${cookieObj[0].id} class="option">${cookieObj[0].color}</option>
           `;
-            userInput.value = "";
-            document.querySelector(".label-name").innerHTML = `Welcome Back:${cookieObj[0].name}`
+            userInput.value = cookieObj[0].name;
+            document.querySelector(".label-name").innerHTML = `Welcome Back: ${cookieObj[0].name}`;
+            formContainer.style.color = "black";
+            body.style.backgroundColor = cookieObj[0].color.split(" ").slice(-1)[0];
             dropdown.insertAdjacentHTML('beforeend', html);
         }
     } else {
         const arrayObjColors = await getColorDB();
         arrayObjColors.map((color, i) => {
             const html = `
-        <option value=${i} class="option">${color.name + " " + color.rgb + " " + color.hex}</option>
-      `;
+        <option value=${i} class="option">${color.name + " " + color.rgb + " " + color.hex}</option> `;
             dropdown.insertAdjacentHTML('beforeend', html);
         });
         userInput.value = "";
@@ -49,16 +51,40 @@ dropdown.addEventListener("click", async (e) => {
 
 });
 
-const validation = (str, prom) => {
+const validation = async (str, prom) => {
     const regex = /[\u0590-\u05FF]/;
+    const cookieData = getCookie();
+    const users = await getAllUserDB();
+    const boolUserExists = users.find(user => user.name === cookieData.username);
+    const cookieObj = users.filter(us => us.name === cookieData.username);
     if (regex.test(str)) {
         const OBJ_USER = {
             name: str,
             color: prom
         }
-        createUser(OBJ_USER);
-        setCookie(OBJ_USER);
+        if (Object.values(cookieData)[0] === undefined) {
+            setCookie(OBJ_USER);
+        } else if (cookieData.username === userInput.value && cookieData.color.split(" ").slice(-1)[0] !== prom.split(" ").slice(-1)[0]) {
+            document.querySelector(".standard-select").innerHTML = `המשתמש כבר רשום`;
+            document.querySelector(".option").innerHTML = `${prom.split(" ").slice(-1)[0]}`;
+            setCookie(OBJ_USER);
+            updateUser(OBJ_USER);
+
+        } else {
+            setCookie(OBJ_USER);
+        }
+        if (!boolUserExists) {
+            btnSubmit.disabled = true;
+            await createUser(OBJ_USER);
+            btnSubmit.disabled = false;
+        }
+        body.style.backgroundColor = prom.split(" ").slice(-1)[0];
+
+    } else {
+        document.querySelector(".standard-select").innerHTML = `שגיאת התחברות:ניתן להכניס רק אותיות בעברית`;
+        document.querySelector(".standard-select").style.color = "rgb(193, 133, 197)";
         userInput.value = "";
+        document.querySelector(".label-name").innerHTML = `Welcome Back`;
     }
 }
 const submitForm = (prom) => {
@@ -66,79 +92,6 @@ const submitForm = (prom) => {
         e.preventDefault();
         validation(userInput.value, prom);
     });
-}
-
-const getColorDB = () => {
-    const CONFIG = {
-        method: "GET",
-        dataType: "json"
-    }
-    return new Promise((resolve, reject) => {
-        fetch("/all/color", CONFIG).then(res => {
-            res.json().then(response => resolve(response));
-        }).catch(err => reject(err));
-    })
-}
-
-const createUser = (obj) => {
-    return new Promise((resolve, reject) => {
-        fetch("/create", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        }
-        ).then(res => {
-            res.json().then(response => resolve(response));
-        }).catch(err => reject(err));
-    })
-}
-
-const getAllUserDB = () => {
-    const CONFIG = {
-        method: "GET",
-        dataType: "json"
-    }
-    const cookieData = getCookie();
-    return new Promise((resolve, reject) => {
-        fetch("/all", CONFIG).then(res => {
-            if (res.status === 200) {
-                res.json().then(response => {
-                    resolve(response);
-                });
-            } else {
-
-                body.style.backgroundColor = cookieData.color.split(" ").slice(-1)[0];
-                const elem = ` 
-                <h1 class="error">ERROR</h1>
-                `
-                formContainer.insertAdjacentHTML("afterbegin", elem);
-                document.querySelector(".welcome").style.opacity = 0;
-            }
-
-        }).catch(err => reject(err));
-    })
-}
-
-const setCookie = (value) => {
-
-    const day = new Date();
-    day.setTime(day.getTime() + (90 * 24 * 60 * 60 * 1000));
-    let expires = `expires=${day.toUTCString()}`;
-    document.cookie = `username=${value.name};${expires};path=/;`;
-    document.cookie = `color=${value.color};${expires};path=/;`
-
-}
-
-const getCookie = () => {
-    let cookie = {};
-    document.cookie.split(';').forEach(function (el) {
-        let [k, v] = el.split('=');
-        cookie[k.trim()] = v;
-    });
-    return cookie;
 }
 
 init();

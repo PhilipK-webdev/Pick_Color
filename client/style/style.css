@@ -123,6 +123,10 @@
     outline: none;
     color: rgb(219, 30, 30);
 }
+.btn-submit[disabled]{
+  background-color: #f1c40f;
+  pointer-events: none;
+}
 .user-input:focus {
     outline: none;
     border: 1px solid #ccc;

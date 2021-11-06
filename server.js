@@ -17,6 +17,6 @@ const clientRoutes = require("./contorller/client/html-route");
 app.use(clientRoutes);
 
 // Connection with the database:
-db.sequelize.sync().then(() => {
+db.sequelize.authenticate().then(() => {
     app.listen(PORT, () => console.log(`listening at http://localhost:${PORT}`));
-});
+}).catch(err => console.log('Unable to connect to the database:', err));
