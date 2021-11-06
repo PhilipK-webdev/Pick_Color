@@ -105,6 +105,15 @@
     cursor: pointer;
     
 }
+.success{
+
+  opacity: 100;
+  font-size: 20px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: bold;
+  background-color:#2b2b7755;
+  color:white;
+}
 
 .btn-submit{
     width: 50%;
